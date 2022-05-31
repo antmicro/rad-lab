@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-output "deployment_id" {
-  description = "RADLab Module Deployment ID"
-  value       = module.elastic_search_project.deployment_id
-}
-
-#output "cluster_credentials_cmd" {
-#  value = local.k8s_credentials_cmd
-#}
-#
-#output "project_id" {
-#  value = local.project.project_id
-#}
-
-
