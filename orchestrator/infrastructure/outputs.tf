@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-resource "google_compute_router" "default" {
-  for_each = var.egress_traffic_config
-
-  project = var.project_id
-  name    = each.value.router_name
-  network = local.network.name
-  region  = each.value.region
-
-  bgp {
-    asn = each.value.bgp
-  }
+output "deployment_id" {
+  value = module.orchestrator_project.deployment_id
 }
 
-resource "google_compute_router_nat" "default" {
-  for_each = var.egress_traffic_config
+output "project_id" {
+  value = module.orchestrator_project.project_id
+}
 
-  name                               = each.value.nat_name
-  nat_ip_allocate_option             = "AUTO_ONLY"
-  router                             = ""
-  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+output "project_name" {
+  value = module.orchestrator_project.name
+}
+
+output "project_number" {
+  value = module.orchestrator_project.number
+}
+
+output "storage_bucket_name" {
+  value = google_storage_bucket.radlab_state_bucket.name
 }

@@ -15,10 +15,11 @@
  */
 
 locals {
-  random_id   = var.random_id == null ? random_id.randomizer.hex : var.random_id
-  project_id  = var.create_project ? format("%s-%s", var.project_name, local.random_id) : var.project_name
-  parent_type = var.parent == null ? null : split("/", var.parent)[0]
-  parent_id   = var.parent == null ? null : split("/", var.parent)[1]
+  random_id      = var.random_id == null ? random_id.randomizer.hex : var.random_id
+  project_id     = var.create_project ? format("%s-%s", var.project_name, local.random_id) : var.project_name
+  parent_type    = var.parent == null ? null : split("/", var.parent)[0]
+  parent_id      = var.parent == null ? null : split("/", var.parent)[1]
+  project_labels = merge(var.labels, { purpose = "rad-lab" })
 
   project = (
     var.create_project ?
