@@ -15,8 +15,6 @@
  */
 
 locals {
-  parent_type              = var.parent == null ? null : split("/", var.parent)[0]
-  parent_id                = var.parent == null ? null : split("/", var.parent)[1]
   cloud_function_iam_roles = []
 }
 
@@ -27,15 +25,8 @@ resource "google_service_account" "function_identity" {
 }
 
 resource "google_folder_iam_member" "function_identity_permissions" {
-  for_each = local.parent_type == "folders" ? local.cloud_function_iam_roles : toset([])
-  folder   = local.parent_id
-  member   = "serviceAccount:${google_service_account.function_identity.email}"
-  role     = each.value
-}
-
-resource "google_organization_iam_member" "function_identity_permissions" {
-  for_each = local.parent_type == "organizations" ? local.cloud_function_iam_roles : toset([])
-  org_id   = local.parent_id
+  for_each = toset(local.cloud_function_iam_roles)
+  folder   = local.parent_folder
   member   = "serviceAccount:${google_service_account.function_identity.email}"
   role     = each.value
 }
@@ -54,4 +45,9 @@ resource "google_vpc_access_connector" "function_vpc_access" {
   region        = var.region
   ip_cidr_range = var.vpc_access_connector_cidr_range
   machine_type  = var.vpc_access_connector_machine_type
+}
+
+resource "google_sourcerepo_repository" "function_repo" {
+  project = module.orchestrator_project.project_id
+  name    = var.function_repository_name
 }

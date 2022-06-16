@@ -35,10 +35,28 @@ variable "cloud_function_subnet" {
   }]
 }
 
+variable "create_folder" {
+  description = "Whether or not to create the parent folder as well."
+  type        = bool
+  default     = false
+}
+
+variable "folder_name" {
+  description = "Name of the folder that should be created.  Only set this value when 'create_folder' is set to true."
+  type        = string
+  default     = null
+}
+
 variable "function_identity_name" {
   description = "Name of the service account that will be used by the Cloud Function."
   type        = string
   default     = "cf-ba-disconnect"
+}
+
+variable "function_name" {
+  description = "Name of the function that will disconnect the billing account from a project."
+  type        = string
+  default     = "cf-radlab-billing-check"
 }
 
 variable "labels" {
@@ -56,6 +74,7 @@ variable "network_name" {
 variable "parent" {
   description = "Parent of the project.  Should be formatted as 'folders/folder_id' or 'organization/org_id'."
   type        = string
+  default     = ""
 }
 
 variable "project_name" {
@@ -70,6 +89,11 @@ variable "region" {
   default     = "us-east1"
 }
 
+variable "function_repository_name" {
+  description = "Name of the repository where the Cloud Function will be hosted."
+  type        = string
+  default     = "cf-ba-disconnect-repo"
+}
 variable "storage_bucket_location" {
   description = "Location where the Terraform state files will be stored."
   type        = string
@@ -105,6 +129,7 @@ variable "topic_name" {
   type        = string
   default     = "billing-threshold"
 }
+
 variable "vpc_access_connector_cidr_range" {
   description = "CIDR range for the VPC access connector"
   type        = string

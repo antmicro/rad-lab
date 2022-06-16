@@ -19,8 +19,18 @@ locals {
   project_apis = [
     "cloudbilling.googleapis.com",
     "cloudfunctions.googleapis.com",
-    "vpcaccess.googleapis.com"
+    "vpcaccess.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "sourcerepo.googleapis.com"
   ]
+
+  parent_folder = var.create_folder ? "folders/${google_folder.radlab_folder.0.folder_id}" : var.parent
+}
+
+resource "google_folder" "radlab_folder" {
+  count        = var.create_folder ? 1 : 0
+  display_name = var.folder_name
+  parent       = var.parent
 }
 
 module "orchestrator_project" {
@@ -28,7 +38,7 @@ module "orchestrator_project" {
 
   project_name       = var.project_name
   billing_account_id = var.billing_account_id
-  parent             = var.parent
+  parent             = local.parent_folder
   labels             = var.labels
   project_apis       = local.project_apis
 }
